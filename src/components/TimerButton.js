@@ -10,14 +10,13 @@ export default function TimerButton({
 }) {
     return (
         <TouchableOpacity
-            styles={[styles.button, { borderColor: color }]}
+            style={[styles.button, { borderColor: color }]}
             onPress={onPress}
         >
             <Text
                 style={[styles.buttonText,
                 small ? styles.small : styles.large,
-                { color }]}
-            >
+                { color }]}>
                 {title}
             </Text>
         </TouchableOpacity>
@@ -26,15 +25,27 @@ export default function TimerButton({
 
 const styles = StyleSheet.create({
     button: {
-
+        marginTop: 10,
+        minWidth: 100,
+        borderWidth: 2,
+        borderRadius: 3
     },
     buttonText: {
-
+        textAlign: 'center',
+        fontWeight: 'bold'
     },
     small: {
-
+        fontSize: 14,
+        padding: 5
     },
     large: {
-
+        fontSize: 16,
+        padding: 10
+    },
+    elapsedTime: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        paddingVertical: 10
     }
 });

@@ -24,7 +24,11 @@ export default class ToggleableTimerForm extends Component {
                 {
                     isOpen ? 
                         <TimerForm /> :
-                        <TimerButton title="+" color="black" />
+                        <TimerButton 
+                            title="+" 
+                            color="black"
+                            onPress={this.handleFormOpen}
+                        />
                 }
             </View>
         );

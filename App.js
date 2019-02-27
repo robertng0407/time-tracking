@@ -58,6 +58,14 @@ export default class App extends React.Component {
     })
   }
 
+  handleRemovePress = timerId => {
+    const { timers } = this.state;
+
+    this.setState({
+      timers: timers.filter(t => t.id !== timerId)
+    });
+  }
+
   render() {
     let timers = this.state.timers.map(({ title, project, id, elapsed, isRunning }) => {
       return (
@@ -69,6 +77,7 @@ export default class App extends React.Component {
           elapsed={elapsed}
           isRunning={isRunning}
           onFormSubmit={this.handleFormSubmit}
+          onRemovePress={this.handleRemovePress}
         />
       );
     });

@@ -7,6 +7,12 @@ import TimerButton from './TimerButton';
 
 export default class Timer extends Component {
 
+    handleRemovePress = () => {
+        const { id, onRemovePress } = this.props;
+
+        onRemovePress(id);
+    }
+
     render() {
         const { title, project, elapsed, onEditPress } = this.props;
         const elapsedString = millisecondsToHuman(elapsed);
@@ -23,7 +29,12 @@ export default class Timer extends Component {
                         title="Edit"
                         onPress={onEditPress}
                     />
-                    <TimerButton color="blue" small title="Remove" />
+                    <TimerButton
+                        color="blue"
+                        small
+                        title="Remove"
+                        onPress={this.handleRemovePress}
+                    />
                 </View>
                 <TimerButton color="#21BA45" title="Start" />
             </View>

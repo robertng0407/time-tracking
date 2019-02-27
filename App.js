@@ -31,11 +31,31 @@ export default class App extends React.Component {
     ]
   }
 
-  handleCreateFormSubmit = (timer) => {
+  handleCreateFormSubmit = timer => {
     const { timers } = this.state;
     this.setState({
       timers: [newTimer(timer), ...timers]
     });
+  }
+
+  handleFormSubmit = attrs => {
+    const { timers } = this.state;
+
+    this.setState({
+      timers: timers.map(timer => {
+        if (timer.id === attrs.id) {
+          const { title, project } = attrs;
+
+          return {
+            ...timer,
+            title,
+            project
+          };
+        };
+
+        return timer;
+      })
+    })
   }
 
   render() {
@@ -48,6 +68,7 @@ export default class App extends React.Component {
           project={project}
           elapsed={elapsed}
           isRunning={isRunning}
+          onFormSubmit={this.handleFormSubmit}
         />
       );
     });

@@ -1,9 +1,22 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Timer from './Timer';
 import TimerForm from './TimerForm';
 
 export default class EditableTimer extends Component {
+    static propTypes = {
+        id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        project: PropTypes.string.isRequired,
+        elapsed: PropTypes.number.isRequired,
+        isRunning: PropTypes.bool.isRequired,
+        onFormSubmit: PropTypes.func.isRequired,
+        onRemovePress: PropTypes.func.isRequired,
+        onStartPress: PropTypes.func.isRequired,
+        onStopPress: PropTypes.func.isRequired
+    }
+
     state = {
         editFormOpen: false
     }
@@ -32,7 +45,16 @@ export default class EditableTimer extends Component {
     }
 
     render() {
-        const { id, title, project, elapsed, isRunning, onRemovePress } = this.props;
+        const { 
+            id,
+            title,
+            project,
+            elapsed,
+            isRunning,
+            onRemovePress,
+            onStartPress,
+            onStopPress
+        } = this.props;
         const { editFormOpen } = this.state;
 
         if (editFormOpen) {
@@ -56,6 +78,8 @@ export default class EditableTimer extends Component {
                 isRunning={isRunning}
                 onEditPress={this.handleEditPress}
                 onRemovePress={onRemovePress}
+                onStartPress={onStartPress}
+                onStopPress={onStopPress}
             />
         );
     }

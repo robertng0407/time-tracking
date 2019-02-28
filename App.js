@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView
 } from 'react-native';
 import uuidv4 from 'uuid/v4';
 import { newTimer } from './src/utils/TimerUtils';
@@ -29,6 +30,29 @@ export default class App extends React.Component {
         isRunning: false
       }
     ]
+  }
+
+  componentDidMount() {
+    const TIME_INTERVAL = 1000;
+
+    this.intervalId = setInterval(() => {
+      const { timers } = this.state;
+
+      this.setState({
+        timers: timers.map(timer => {
+          const { elapsed, isRunning } = timer;
+
+          return {
+            ...timer,
+            elapsed: isRunning ? elapsed + TIME_INTERVAL : elapsed
+          };
+        })
+      });
+    }, TIME_INTERVAL);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
   }
 
   handleCreateFormSubmit = timer => {
@@ -66,6 +90,27 @@ export default class App extends React.Component {
     });
   }
 
+  toggleTimer = timerId => {
+    this.setState(prevState => {
+      const { timers } = prevState;
+
+      return {
+        timers: timers.map(timer => {
+          const { id, isRunning } = timer;
+
+          if (id === timerId) {
+            return {
+              ...timer,
+              isRunning: !isRunning
+            };
+          };
+
+          return timer;
+        })
+      };
+    });
+  }
+
   render() {
     let timers = this.state.timers.map(({ title, project, id, elapsed, isRunning }) => {
       return (
@@ -78,6 +123,8 @@ export default class App extends React.Component {
           isRunning={isRunning}
           onFormSubmit={this.handleFormSubmit}
           onRemovePress={this.handleRemovePress}
+          onStartPress={this.toggleTimer}
+          onStopPress={this.toggleTimer}
         />
       );
     });
@@ -87,12 +134,17 @@ export default class App extends React.Component {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Timers</Text>
         </View>
-        <ScrollView style={styles.timerList}>
-          <ToggleableTimerForm
-            onFormSubmit={this.handleCreateFormSubmit}
-          />
-          {timers}
-        </ScrollView>
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={styles.timerListContainer}
+        >
+          <ScrollView style={styles.timerList}>
+            <ToggleableTimerForm
+              onFormSubmit={this.handleCreateFormSubmit}
+            />
+            {timers}
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     );
   }
@@ -115,5 +167,8 @@ const styles = StyleSheet.create({
   },
   timerList: {
     paddingBottom: 15
+  },
+  timerListContainer: {
+    flex: 1
   }
 });

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { StyleSheet, View } from 'react-native';
 
@@ -6,6 +7,10 @@ import TimerButton from './TimerButton';
 import TimerForm from './TimerForm';
 
 export default class ToggleableTimerForm extends Component {
+    static propTypes = {
+        onFormSubmit: PropTypes.func.isRequired
+    }
+
     state = {
         isOpen: false
     }
